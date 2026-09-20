@@ -5,10 +5,31 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 # 1. Page Configuration
 st.set_page_config(page_title="Toxic Comment Classifier", page_icon="🛡️", layout="centered")
 
+# 2. Inject Custom CSS to hide the GitHub icon and toolbar
+st.markdown("""
+<style>
+    /* Hide the top Streamlit menu, header, and GitHub icon */
+    #MainMenu {visibility: hidden;}
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+    
+    .viewerBadge_container__1QSob,
+    .styles_viewerBadge__1yB5_,
+    .viewerBadge_link__1S137,
+    .viewerBadge_text__1JaDK {
+        display: none !important;
+    }
+    
+    div[data-testid="stToolbar"] {
+        display: none !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 st.title("🛡️ Content Moderation AI")
 st.write("Analyze text for toxic patterns using a fine-tuned NLP Transformer.")
 
-# 2. Cache the model so it only loads once per session
+# 3. Cache the model so it only loads once per session
 @st.cache_resource
 def load_model():
     # Points to your newly extracted folder
@@ -20,10 +41,10 @@ def load_model():
 with st.spinner("Loading AI Model... (This takes a few seconds on the first run)"):
     tokenizer, model = load_model()
 
-# 3. User Input
+# 4. User Input
 comment = st.text_area("Enter a comment to analyze:", height=150, placeholder="Type something here...")
 
-# 4. Prediction Logic
+# 5. Prediction Logic
 if st.button("Analyze Comment", type="primary"):
     if not comment.strip():
         st.warning("Please enter some text to analyze.")
